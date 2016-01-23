@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+    <head>
+		
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="">
+        <link rel="shortcut icon" href="/asset/guolin.png"/>
+        <link rel="alternate" type="application/rss+xml" title="Guo Lin" href="/atom.xml">
+        <link rel="canonical" href="http://guolinn.com/">
+
+        <title>Getting started with Fig and Express.js | GuoLin&#39;s blog</title>
+        <meta name="description" content="{{meta_description}}">
+
+        <link href="//libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/styles/crisp.css">
+        <meta name="HandheldFriendly" content="True" />
+        <meta name="MobileOptimized" content="320" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    
+		<body class="post-template">
+	
+
+        <header id="header">
+            <a id="logo" href="/"><img src="/asset/guolin.png" alt="GuoLin's blog" /></a>
+            <h1><a href="/">Guo Lin</a></h1>
+            <p></p>
+            <div id="follow-icons">
+	<a href="http://instagram.com/guolin"><i class="fa fa-instagram fa-2x"></i></a>
+	<a href="http://pinterest.com/guolin"><i class="fa fa-pinterest-square fa-2x"></i></a>
+	<a href="http://github.com/guolin"><i class="fa fa-github-square fa-2x"></i></a>
+	<a href="http://facebook.com/guolinnn"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="http://twitter.com/MrGuo"><i class="fa fa-twitter-square fa-2x"></i></a>
+	<a href="http://linkedin.com/in/mrguolin"><i class="fa fa-linkedin-square fa-2x"></i></a>
+	<a href="/atom.xml"><i class="fa fa-rss-square fa-2x"></i></a>
+</div>
+<h6><a href="/about">About</a></h6>
+        </header>
+
+        <main id="content">
+        
+
+<article class="post">
+  
+  February 24, 2015
+  
+    <span class="taglist">  &middot; 
+    
+    
+      <a href='/tags/docker/'>docker</a> 
+    
+      <a href='/tags/nodejs/'>nodejs</a> 
+    
+    </span>
+  
+
+  <h1 class="post-title">Getting started with Fig and Express.js</h1>
+  <section class="post-content article-entry">
+    <p>Let’s use Fig to set up and run a Expressjs/MongoDB app. Before starting, you’ll need to have <strong>Fig</strong> installed.</p>
+<p>Let’s set up the <strong>four</strong> files that’ll get us started. </p>
+<p>First, our app is going to be running inside a Docker container which contains all of its dependencies. We can define what goes inside that Docker container using a file called <code>Dockerfile</code>. It’ll contain this to start with:</p>
+<figure class="highlight bash"><pre><div class="line">FROM dockerfile/nodejs</div><div class="line"></div><div class="line">WORKDIR /data</div><div class="line"><span class="comment"># update to the latest</span></div><div class="line">RUN apt-get install gcc make build-essential</div><div class="line"></div><div class="line"><span class="comment"># Add this to your Dockerfile, after your deps, but before your app code.</span></div><div class="line"><span class="comment"># The purpose of copy to /tmp folder firest is let docker cache the build result. </span></div><div class="line"><span class="comment"># The second time all the step will be cached.</span></div><div class="line"></div><div class="line">ADD package.json /tmp/package.json</div><div class="line">RUN <span class="built_in">cd</span> /tmp &amp;&amp; npm install</div><div class="line">RUN cp <span class="operator">-a</span> /tmp/node_modules /data/</div></pre></figure>
+
+<p>That’ll install our application inside an image with Nodejs installed alongside all of our Nodejs dependencies. For more information on how to write <code>Dockerfiles</code>, see the <a href="https://docs.docker.com/userguide/dockerimages/#building-an-image-from-a-dockerfile" target="_blank" rel="external">Docker user guide</a> and the <a href="http://docs.docker.com/reference/builder/" target="_blank" rel="external">Dockerfile reference</a>.</p>
+<p>Second, we define the dependencies in a file called <code>package.json</code>:</p>
+<figure class="highlight json"><pre><div class="line">{</div><div class="line">  “<span class="attribute">name</span>“: <span class="value"><span class="string">“fig-nodejs”</span></span>,</div><div class="line">  “<span class="attribute">description</span>“: <span class="value"><span class="string">“Getting started with Fig and Nodejs”</span></span>,</div><div class="line">  “<span class="attribute">version</span>“: <span class="value"><span class="string">“0.0.1”</span></span>,</div><div class="line">  “<span class="attribute">author</span>“: <span class="value"><span class="string">“Guolin”</span></span>,</div><div class="line">  “<span class="attribute">engines</span>“: <span class="value">{</span></div><div class="line">    “<span class="attribute">node</span>“: <span class="value"><span class="string">“0.10.x”</span></span>,</div><div class="line">    “<span class="attribute">npm</span>“: <span class="value"><span class="string">“1.4.x”</span></span></div><div class="line">  },</div><div class="line">  “<span class="attribute">dependencies</span>“: <span class="value">{</span></div><div class="line">    “<span class="attribute">express</span>“: <span class="value"><span class="string">“~4.10.1”</span></span>,</div><div class="line">    “<span class="attribute">mongoose</span>“: <span class="value"><span class="string">“~3.8.8”</span></span></div><div class="line">  }</div><div class="line">}</div></pre></figure>
+
+<p>3rd, this is all tied together with a file called <code>fig.yml</code>. It describes the services that our app comprises of (a web server and database), what Docker images they use, how they link together, what volumes will be mounted inside the containers and what ports they expose.</p>
+<figure class="highlight python"><pre><div class="line">db:</div><div class="line">  image: dockerfile/mongodb</div><div class="line">  command: mongod –smallfiles  <span class="comment"># for fix this image’s bug</span></div><div class="line"></div><div class="line">web:</div><div class="line">  build: .</div><div class="line">  command: node app.js</div><div class="line">  volumes:</div><div class="line">    - ./app.js:/data/app.js</div><div class="line">  ports:</div><div class="line">    - <span class="string">“3000:3000”</span></div><div class="line">  links:</div><div class="line">    - db</div><div class="line">  environment: </div><div class="line">   MONGO_URL: mongodb://db</div></pre></figure>
+
+<p>See the <a href="http://www.fig.sh/yml.html" target="_blank" rel="external">fig.yml reference</a> for more information on how it works.</p>
+<p>Finally, we need a file called ‘app.js’ to start the expressjs app and connect the mongodb.</p>
+<figure class="highlight javascript"><pre><div class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">‘express’</span>),</div><div class="line">    mongoose = <span class="built_in">require</span>(<span class="string">‘mongoose’</span>);</div><div class="line"></div><div class="line"><span class="keyword">var</span> app = express(),</div><div class="line">  connected = <span class="literal">true</span>;</div><div class="line"></div><div class="line"><span class="comment">// Test the mongodb connect is ok</span></div><div class="line">mongoose.connect(process.env.MONGO_URL , <span class="function"><span class="keyword">function</span><span class="params">(err)</span> </span>{</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (err) {</div><div class="line">    connected = <span class="literal">false</span>;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">‘Could not connect to MongoDB!’</span>);</div><div class="line">    <span class="built_in">console</span>.log(err);</div><div class="line">  }</div><div class="line">  </div><div class="line">});</div><div class="line"></div><div class="line"><span class="comment">// Test the web server</span></div><div class="line">app.get(<span class="string">‘/‘</span>, <span class="function"><span class="keyword">function</span> <span class="params">(req, res)</span> </span>{</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (connected) {</div><div class="line">    res.send(<span class="string">‘MongoDB has been connected.’</span>);</div><div class="line">  } <span class="keyword">else</span> {</div><div class="line">    res.send(<span class="string">‘Could not connect to MongoDB!’</span>);</div><div class="line">  }</div><div class="line">  </div><div class="line">});</div><div class="line"></div><div class="line"><span class="keyword">var</span> server = app.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{</div><div class="line"></div><div class="line">    <span class="keyword">var</span> host = server.address().address,</div><div class="line">        port = server.address().port;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">‘Example app listening at <a href="http://%s:%s" target="_blank" rel="external">http://%s:%s</a>‘</span>, host, port);</div><div class="line"></div><div class="line">});</div></pre></figure>
+
+<p>OK, everything has been ready.</p>
+<p>Then, run <code>fig up</code>:</p>
+<figure class="highlight bash"><pre><div class="line">Recreating myapp_db_1…</div><div class="line">Recreating myapp_web_1…</div><div class="line">Attaching to myapp_db_1, myapp_web_1</div><div class="line">db_1  | <span class="number">2015</span>-<span class="number">02</span>-<span class="number">17</span>T07:<span class="number">16</span>:<span class="number">16.363</span>+<span class="number">0000</span> [initandlisten] waiting <span class="keyword">for</span> connections on port <span class="number">27017</span></div><div class="line">…</div><div class="line">web_1 | Example app listening at http://<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">3000</span></div></pre></figure>
+
+<p>In the background:</p>
+<ol>
+<li>Fig will help you to build a new image with your <code>Dockerfile</code>.2.  Fig create two container (web and db).</li>
+<li>Run a command <code>node app.js</code> (configed in fig.yml) on the web container.</li>
+</ol>
+<p>And now your Expressjs app should be running at port 3000 on your docker daemon (if you’re using boot2docker, <code>boot2docker ip</code> will tell you its address).</p>
+<p>DONE</p>
+<ul>
+<li>all the code will be donwload on <a href="https://github.com/guolin/fig-expressjs-examples*" target="_blank" rel="external">https://github.com/guolin/fig-expressjs-examples*</a></li>
+</ul>
+<p><em>注：第一次写英文博客 :)</em></p>
+
+  </section>
+  <footer class="post-footer">
+    <!--
+    <section class="author">
+      <h4>Guo Lin</h4>
+      <p></p>
+    </section>
+    -->
+  </footer>
+</article>
+
+<nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2015/JavaScript-数据结构-与-lodash/">
+        ← prev <!--JavaScript 数据结构 与 lodash-->
+    </a>
+    
+    <span class="page-number">•</span>
+    
+</nav>
+
+<!-- Begin Comments Code -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'guolinn'; // required: replace example with your shortname
+      var disqus_identifier = '{{id}}';
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">Comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Comments Code -->
+
+
+        </main>
+        <footer id="footer">
+            <section id="footer-message">&copy; 2016 Guo Lin. All rights reserved. Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. <a href="https://github.com/guolin/crisp-hexo-theme" target="_blank">crisp</a> theme by <a href="guolin.github.io" target="_blank">Guo Lin</a>.</section>
+        </footer>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','/js/ga.js','ga');
+            ga('create', 'UA-59837832-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>
+
+

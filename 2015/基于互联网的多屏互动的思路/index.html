@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+    <head>
+		
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="">
+        <link rel="shortcut icon" href="/asset/guolin.png"/>
+        <link rel="alternate" type="application/rss+xml" title="Guo Lin" href="/atom.xml">
+        <link rel="canonical" href="http://guolinn.com/">
+
+        <title>基于互联网的多屏互动的思路 | GuoLin&#39;s blog</title>
+        <meta name="description" content="{{meta_description}}">
+
+        <link href="//libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/styles/crisp.css">
+        <meta name="HandheldFriendly" content="True" />
+        <meta name="MobileOptimized" content="320" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    
+		<body class="post-template">
+	
+
+        <header id="header">
+            <a id="logo" href="/"><img src="/asset/guolin.png" alt="GuoLin's blog" /></a>
+            <h1><a href="/">Guo Lin</a></h1>
+            <p></p>
+            <div id="follow-icons">
+	<a href="http://instagram.com/guolin"><i class="fa fa-instagram fa-2x"></i></a>
+	<a href="http://pinterest.com/guolin"><i class="fa fa-pinterest-square fa-2x"></i></a>
+	<a href="http://github.com/guolin"><i class="fa fa-github-square fa-2x"></i></a>
+	<a href="http://facebook.com/guolinnn"><i class="fa fa-facebook-square fa-2x"></i></a>
+	<a href="http://twitter.com/MrGuo"><i class="fa fa-twitter-square fa-2x"></i></a>
+	<a href="http://linkedin.com/in/mrguolin"><i class="fa fa-linkedin-square fa-2x"></i></a>
+	<a href="/atom.xml"><i class="fa fa-rss-square fa-2x"></i></a>
+</div>
+<h6><a href="/about">About</a></h6>
+        </header>
+
+        <main id="content">
+        
+
+<article class="post">
+  
+  February 25, 2015
+  
+    <span class="taglist">  &middot; 
+    
+    
+      <a href='/tags/multi-screen/'>multi-screen</a> 
+    
+    </span>
+  
+
+  <h1 class="post-title">基于互联网的多屏互动的思路</h1>
+  <section class="post-content article-entry">
+    <h2 id="u95EE_u9898"><a href="#u95EE_u9898" class="headerlink" title="问题"></a>问题</h2><p>目前大多数投屏的技术方案（包括airplay，DLNA，chromecast，miracast等）有一个共同的特点就是<strong>基于局域网的设备发现</strong>。这个特点明显的好处就是完全不依赖于internet，不需要连接外网就能正常工作。</p>
+<p>但随着时代的发展，1.越来越多的设备可以上网（参见物联网的定义 IoT:Internet of Thing），2.绝大多数的视频都来自网络。基于以上两点 “不依赖internet” 带来的好处并不明显。但带来的缺点去越来越突出:</p>
+<ul>
+<li>设备配对操作复杂：airplay、DLNA、chromecast需要在同一局域网内并且用专门的硬件和客户端软件才能操作成功。miracast更需要连接wifi热点。</li>
+<li>私有协议互不兼容：airplay只能用于apple生态系统，chromecast需要注册成为google的开发者，开发和调试程序都需要通过google。</li>
+<li>可扩展性差：airplay的字幕一直不能自定义，播放进度条永远挡住字幕，这些都没发由开发者自己定义。</li>
+<li>交互逻辑陈旧：例如airplay依然是扩展屏幕的概念，部分ipad app airplay到itv时，ipad的app竟然必须保持开启且常亮。难道不能同时用ipad干点儿别的吗？</li>
+<li>稳定性和兼容性差：airplay是所有方案中最稳定的，但也经常出错。</li>
+</ul>
+<h2 id="u65B9_u6848"><a href="#u65B9_u6848" class="headerlink" title="方案"></a>方案</h2><p><strong>基于互联网的投屏方案</strong></p>
+<p><img src="/asset/airplay.png" alt="基于互联网的投屏方案"></p>
+<p>这个方案的特点是：</p>
+<ol>
+<li>多了一个云端的server，不再基于设备发现。不再需要设备配对的过程，也不强制在同一个局域网内。</li>
+<li>采用PUB/SUB的模型，解除部分耦合、简单稳定且易于理解。</li>
+</ol>
+<h3 id="u5907_u6CE8"><a href="#u5907_u6CE8" class="headerlink" title="备注"></a>备注</h3><ol>
+<li>chromecast也是有中央服务器的，但是它依然机遇设备发现。这就导致了：1. 将chromecast插在酒店电视上，但酒店的局域网时不互通的导致chromecast没法用。2. youtube用chromecast播放必须安装一个chrome插件。……</li>
+<li>airplay和其他的方案在播放远程视频时也是传输的URL。但airplay还需要在客户端显示视频的进度条和下载速度等信息，这可能导致很多同步的错误。</li>
+<li>airply和chromecast的应用场景比这个方案的应用场景要宏大的多（mirror功能）。本方案只想解决最基础和常用的功能。（mirror功能的延迟和画质真的是惨不忍睹呀）</li>
+</ol>
+
+  </section>
+  <footer class="post-footer">
+    <!--
+    <section class="author">
+      <h4>Guo Lin</h4>
+      <p></p>
+    </section>
+    -->
+  </footer>
+</article>
+
+<nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2015/TV-Video-player-UI-sketch/">
+        ← prev <!--TV Video player UI sketch-->
+    </a>
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2015/对于chromecast的看法/">
+        <!--对于chromecast的看法--> next →
+    </a>
+    
+</nav>
+
+<!-- Begin Comments Code -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'guolinn'; // required: replace example with your shortname
+      var disqus_identifier = '{{id}}';
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">Comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Comments Code -->
+
+
+        </main>
+        <footer id="footer">
+            <section id="footer-message">&copy; 2016 Guo Lin. All rights reserved. Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. <a href="https://github.com/guolin/crisp-hexo-theme" target="_blank">crisp</a> theme by <a href="guolin.github.io" target="_blank">Guo Lin</a>.</section>
+        </footer>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','/js/ga.js','ga');
+            ga('create', 'UA-59837832-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+    </body>
+</html>
+
+
