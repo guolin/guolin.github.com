@@ -9,7 +9,7 @@
         <link rel="alternate" type="application/rss+xml" title="Guo Lin" href="/atom.xml">
         <link rel="canonical" href="http://guolinn.com/">
 
-        <title>GuoLin&#39;s blog</title>
+        <title>atom-vi-mode-maping-jj2esc | GuoLin&#39;s blog</title>
         <meta name="description" content="{{meta_description}}">
 
         <link href="//libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
@@ -46,7 +46,7 @@ window['_fs_org'] = 'T0QF';
 
     </head>
     
-		<body class="home-template">
+		<body class="post-template">
 	
 
         <header id="header">
@@ -67,182 +67,57 @@ window['_fs_org'] = 'T0QF';
 
         <main id="content">
         
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2016/atom-vi-mode-maping-jj2esc/">atom-vi-mode-maping-jj2esc</a>
-  
-  <span class="separator"> &middot; </span>
+
+<article class="post">
   
   March 19, 2016
   
-  
-  </h3>
-</section>
 
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/什么是-customer-success-management/">什么是 customer success management ?</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  December 17, 2015
-  
-  
-  </h3>
-</section>
+  <h1 class="post-title">atom-vi-mode-maping-jj2esc</h1>
+  <section class="post-content article-entry">
+    <p>很久前试用过Atom，当时很卡。最近有下载了一次感觉速度有很大提升，插件系统感觉比sublime更完善一些。<br>不过有个小问题：vi-mode 下配置 jj 到 esc 的配置方法不是很直观，不只是设置keymap就可以了，下面我贴出我正在使用的配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># keymap.cson&#10;&#10;&#39;atom-text-editor.vim-mode.insert-mode&#39;:&#10;  &#39;j&#39;: &#39;exit-insert-mode-if-preceded-by-j&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># init.coffee&#10;&#10;atom.commands.add &#39;atom-text-editor&#39;, &#39;exit-insert-mode-if-preceded-by-j&#39;: (e) -&#62;&#10;  editor = @getModel()&#10;  pos = editor.getCursorBufferPosition()&#10;  range = [pos.traverse([0,-1]), pos]&#10;  lastChar = editor.getTextInBufferRange(range)&#10;  if lastChar != &#34;j&#34;&#10;    e.abortKeyBinding()&#10;  else&#10;    editor.backspace()&#10;    atom.commands.dispatch(e.currentTarget, &#39;vim-mode:activate-normal-mode&#39;)</span><br></pre></td></tr></table></figure>
+<p>参考链接：<a href="https://github.com/atom/vim-mode/issues/334#issuecomment-85603175" target="_blank" rel="external">https://github.com/atom/vim-mode/issues/334#issuecomment-85603175</a></p>
 
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/电视收视率的一点看法/">电视收视率的一点看法</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  April 25, 2015
-  
-  
-  </h3>
-</section>
-
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/FireTV-UI-Sketch/">FireTV-UI-Sketch</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  March 4, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/sketch/'>sketch</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
-
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/TV-Video-player-UI-sketch/">TV Video player UI sketch</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  March 2, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/sketch/'>sketch</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
-
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/基于互联网的多屏互动的思路/">基于互联网的多屏互动的思路</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  February 25, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/multi-screen/'>multi-screen</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
-
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/对于chromecast的看法/">对于chromecast的看法</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  February 25, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/multi-screen/'>multi-screen</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
-
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/多屏应用的设计特征与实例/">多屏应用的设计特征与实例</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  February 25, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/multi-screen/'>multi-screen</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
-
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/Getting-started-with-Fig-and-MEAN-JS/">Getting started with Fig and MEAN.JS</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  February 24, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/docker/'>docker</a> 
-    
-      <a href='/tags/nodejs/'>nodejs</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
-
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/NIKE-fuelband/">NIKE+ fuelband</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  February 24, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/internet-of-things/'>internet of things</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
+  </section>
+  <footer class="post-footer">
+    <!--
+    <section class="author">
+      <h4>Guo Lin</h4>
+      <p></p>
+    </section>
+    -->
+  </footer>
+</article>
 
 <nav class="pagination" role="pagination">
-  
-  <span class="page-number">Page 1 of 2</span>
-  <a class="older-posts" href="/page/2/">Older Posts →</a>
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2015/什么是-customer-success-management/">
+        <!--什么是 customer success management ?--> next →
+    </a>
+    
 </nav>
+
+<!-- Begin Comments Code -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'guolinn'; // required: replace example with your shortname
+      var disqus_identifier = '';
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">Comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Comments Code -->
+
 
         </main>
         <footer id="footer">
