@@ -9,7 +9,7 @@
         <link rel="alternate" type="application/rss+xml" title="Guo Lin" href="/atom.xml">
         <link rel="canonical" href="http://guolinn.com/">
 
-        <title>GuoLin&#39;s blog</title>
+        <title>在Axure中使用font-awesome | GuoLin&#39;s blog</title>
         <meta name="description" content="{{meta_description}}">
 
         <link href="//libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
@@ -46,7 +46,7 @@ window['_fs_org'] = 'T0QF';
 
     </head>
     
-		<body class="home-template">
+		<body class="post-template">
 	
 
         <header id="header">
@@ -67,89 +67,90 @@ window['_fs_org'] = 'T0QF';
 
         <main id="content">
         
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/NIKE-fuelband/">NIKE+ fuelband</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  February 24, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/internet-of-things/'>internet of things</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
 
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/Docker搭建Shadowsocks/">Docker搭建Shadowsocks</a>
+<article class="post">
   
-  <span class="separator"> &middot; </span>
-  
-  February 24, 2015
-  
+  April 27, 2016
   
     <span class="taglist">  &middot; 
     
     
-      <a href='/tags/docker/'>docker</a> 
+      <a href='/tags/axure/'>axure</a> 
     
-    </saan>
+    </span>
   
-  </h3>
-</section>
 
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/JavaScript-数据结构-与-lodash/">JavaScript 数据结构 与 lodash</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  February 24, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/JavaScript/'>JavaScript</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
+  <h1 class="post-title">在Axure中使用font-awesome</h1>
+  <section class="post-content article-entry">
+    <p>FontAwesome不仅可以应用在web设计中，还可以在UI原型设计中，他有很多好处。</p>
+<ol>
+<li>图标多：基本上常见的图标他都囊括其中。</li>
+<li>适量字体：随意放大缩小无锯齿。</li>
+<li>轻量级：文件非常小。</li>
+<li>颜色随意更换。</li>
+<li>排版容易：由于是字体，所有很容易与字体对其。（不过有的时候可能不希望对其）</li>
+</ol>
+<h2 id="u5982_u4F55_u4F7F_u7528"><a href="#u5982_u4F55_u4F7F_u7528" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="u7B2C_u4E00_u6B65_uFF1A__u5B89_u88C5_u5B57_u4F53"><a href="#u7B2C_u4E00_u6B65_uFF1A__u5B89_u88C5_u5B57_u4F53" class="headerlink" title="第一步： 安装字体"></a>第一步： 安装字体</h3><ol>
+<li>官网下载字体：<a href="https://fortawesome.github.io/Font-Awesome/" target="_blank" rel="external">https://fortawesome.github.io/Font-Awesome/</a> （just download， 写这个博客是的最新版为 <a href="https://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.6.1.zip" target="_blank" rel="external">https://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.6.1.zip</a> ）</li>
+<li>解压缩并安装fonts目录下的任意字体。</li>
+<li>安装后重启axure，并确认能够选择fontawesome字体。（可能需要重启axure2次）<br><img src="/asset/fontawesome_1.png" alt="fontawesome_1"></li>
+</ol>
+<h3 id="u7B2C_u4E8C_u6B65_uFF1A__u590D_u5236_u7C98_u8D34icon_u5B57_u7B26"><a href="#u7B2C_u4E8C_u6B65_uFF1A__u590D_u5236_u7C98_u8D34icon_u5B57_u7B26" class="headerlink" title="第二步： 复制粘贴icon字符"></a>第二步： 复制粘贴icon字符</h3><ol>
+<li>在Axure中随意建立个文本框。</li>
+<li>将字体选择为FontAwesome。</li>
+<li>打开FontAwesome的cheatsheet <a href="https://fortawesome.github.io/Font-Awesome/cheatsheet/" target="_blank" rel="external">https://fortawesome.github.io/Font-Awesome/cheatsheet/</a></li>
+<li>复制你想要的图标到那个文本框中。</li>
+<li>随意的改变颜色和大小，开始享受fontawesome的便捷吧。</li>
+</ol>
+<h3 id="u7B2C_u4E09_u6B65_uFF1A__u53D1_u5E03_u6210HTML_u6587_u4EF6"><a href="#u7B2C_u4E09_u6B65_uFF1A__u53D1_u5E03_u6210HTML_u6587_u4EF6" class="headerlink" title="第三步： 发布成HTML文件"></a>第三步： 发布成HTML文件</h3><p>此时已经可以在编辑页面查看效果了，但是预览和生成html的时候还是现实方块，解决方法也很简单。</p>
+<ol>
+<li>在axure中，打开 Publish &gt; Generate HTML Files &gt; Web Fonts</li>
+<li>点击加号添加一个webfont， URL 添加最新的地址，例如 <a href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" target="_blank" rel="external">https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css</a><br><img src="/asset/fontawesome_2.png" alt="fontawesome_2"></li>
+</ol>
+<h2 id="u5176_u4ED6"><a href="#u5176_u4ED6" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>网络上可能还有一些font-awesome的widgets，我并不建议使用。因为上述方法已经足够简单了，导入第三方widgets只会徒增烦恼。</li>
+<li>如果官方提供的css地址不可用可以使用一些国内的cdn，例如 <a href="http://www.bootcdn.cn/font-awesome/" target="_blank" rel="external">http://www.bootcdn.cn/font-awesome/</a></li>
+<li>阿里有一个图标服务也非常不错, 推荐尝试一下 <a href="http://iconfont.cn/" target="_blank" rel="external">http://iconfont.cn/</a></li>
+</ul>
 
-<section id="{{id}}" class="{{post_class}}">
-  <h3 class="post-title">
-  <a href="/2015/Getting-started-with-Fig-and-Express-js/">Getting started with Fig and Express.js</a>
-  
-  <span class="separator"> &middot; </span>
-  
-  February 24, 2015
-  
-  
-    <span class="taglist">  &middot; 
-    
-    
-      <a href='/tags/docker/'>docker</a> 
-    
-      <a href='/tags/nodejs/'>nodejs</a> 
-    
-    </saan>
-  
-  </h3>
-</section>
+  </section>
+  <footer class="post-footer">
+    <!--
+    <section class="author">
+      <h4>Guo Lin</h4>
+      <p></p>
+    </section>
+    -->
+  </footer>
+</article>
 
 <nav class="pagination" role="pagination">
-  <a class="newer-posts" href="/">← Newer Posts</a>
-  <span class="page-number">Page 2 of 2</span>
-  
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2016/atom-vi-mode-maping-jj2esc/">
+        <!--Atom vi-mode 将jj映射成ESC的方法--> next →
+    </a>
+    
 </nav>
+
+<!-- Begin Comments Code -->
+<div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'guolinn'; // required: replace example with your shortname
+      var disqus_identifier = '';
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">Comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<!-- End Comments Code -->
+
 
         </main>
         <footer id="footer">
