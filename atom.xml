@@ -1,25 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title><![CDATA[GuoLin's blog]]></title>
-  <subtitle><![CDATA[PM ⇄ Developer. Live in Beijing]]></subtitle>
+  <title>GuoLin&#39;s blog</title>
+  <subtitle>PM ⇄ Developer. Live in Beijing</subtitle>
   <link href="/atom.xml" rel="self"/>
+  
   <link href="http://yoursite.com/"/>
-  <updated>2016-04-27T09:20:42.000Z</updated>
+  <updated>2016-10-30T14:50:04.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
-    <name><![CDATA[Guo Lin]]></name>
+    <name>Guo Lin</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[在Axure中使用font-awesome]]></title>
+    <title>加速NPM</title>
+    <link href="http://yoursite.com/2016/npm/"/>
+    <id>http://yoursite.com/2016/npm/</id>
+    <published>2016-10-30T08:18:14.000Z</published>
+    <updated>2016-10-30T14:50:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>NPM很慢的原因：</p>
+<ol>
+<li>网络连接问题。</li>
+<li>NPM install的机制问题。</li>
+</ol>
+<h2 id="1-解决网络连接问题。"><a href="#1-解决网络连接问题。" class="headerlink" title="1. 解决网络连接问题。"></a>1. 解决网络连接问题。</h2><h4 id="1-使用更快的registry镜像。方法很多主要分为三类："><a href="#1-使用更快的registry镜像。方法很多主要分为三类：" class="headerlink" title="1. 使用更快的registry镜像。方法很多主要分为三类："></a>1. 使用更快的registry镜像。方法很多主要分为三类：</h4><ul>
+<li><p>别名法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alias cnpm=&quot;npm --registry=https://registry.npm.taobao.org</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置文件法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm config set registry https://registry.npm.taobao.org</div></pre></td></tr></table></figure>
+</li>
+<li><p>直接用第三方的npm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</div><div class="line">cnpm install</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>提示： 可以使用一些小工具进行切换，例如nrv</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$npm install -g nrm</div><div class="line"></div><div class="line">$nrm ls</div><div class="line">* npm -----  https://registry.npmjs.org/</div><div class="line">  cnpm ----  http://r.cnpmjs.org/</div><div class="line">  taobao --  https://registry.npm.taobao.org/</div><div class="line">  nj ------  https://registry.nodejitsu.com/</div><div class="line">  rednpm -- http://registry.mirror.cqupt.edu.cn</div><div class="line">  skimdb -- https://skimdb.npmjs.com/registry</div><div class="line">  </div><div class="line">$nrm use taobao</div></pre></td></tr></table></figure>
+<h4 id="2-使用本地缓存的npm镜像。"><a href="#2-使用本地缓存的npm镜像。" class="headerlink" title="2. 使用本地缓存的npm镜像。"></a>2. 使用本地缓存的npm镜像。</h4><ul>
+<li>npm-proxy-cache</li>
+<li>local-npm: <a href="https://github.com/nolanlawson/local-npm" target="_blank" rel="external">https://github.com/nolanlawson/local-npm</a></li>
+<li>npm-lazy</li>
+</ul>
+<h3 id="可能的问题："><a href="#可能的问题：" class="headerlink" title="可能的问题："></a>可能的问题：</h3><p>1.无法npm publish。 </p>
+<p>因为publish频次不高，需要的时候切换回npm的官方registry就可以了。</p>
+<p>2.自动选择问题</p>
+<p>有的一套脚本可能会在国内和国外不同的服务器上运行，例如CI服务器在国外实际开发和部署在国内。这个时候就需要自动的选择合适的registry。</p>
+<p>ufnr就是解决这个问题，本身依赖很少下载快，并能够根据不同的环境切换合适的registry</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ npm install -g ufnr</div><div class="line">$ ufnr</div><div class="line">current registry is https://registry.npm.taobao.org</div></pre></td></tr></table></figure>
+<h2 id="2-npm机制问题"><a href="#2-npm机制问题" class="headerlink" title="2. npm机制问题"></a>2. npm机制问题</h2><ul>
+<li>没有离线模式，必须访问网络</li>
+<li>顺序执行，效率差</li>
+</ul>
+<p>解决离线和缓存的方法有：</p>
+<ol>
+<li>上面提到的local-npm，相当于本地搭建一个registry镜像</li>
+<li><p>–cache-min： 这个参数可以强制使用本地缓存，例如,</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install --cache-min 999 xx</div><div class="line">// 强制优先使用本地999分钟内的缓存</div></pre></td></tr></table></figure>
+<p> 这种方法的缺点有两点；</p>
+<ol>
+<li>如果缓存中有对应的包依然需要发送Etag验证是否需要更新。</li>
+<li>如果缓存中有版本不对应的包则直接报错。（而不是下载正确的包）</li>
+</ol>
+</li>
+<li><p>替换npm install，例如，npm-cache 等</p>
+</li>
+</ol>
+<h2 id="3-终极解决方案"><a href="#3-终极解决方案" class="headerlink" title="3. 终极解决方案"></a>3. 终极解决方案</h2><p>yarn是facebook推出的解决方案，貌似也得到了npm的官方支持。解决了npm的主要问题，但网络连接问题依然需要切换registry来实现。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;NPM很慢的原因：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;网络连接问题。&lt;/li&gt;
+&lt;li&gt;NPM install的机制问题。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;1-解决网络连接问题。&quot;&gt;&lt;a href=&quot;#1-解决网络连接问题。&quot; class=&quot;headerlink&quot; title
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>在Axure中使用font-awesome</title>
     <link href="http://yoursite.com/2016/using-fontawesome-in-axure/"/>
     <id>http://yoursite.com/2016/using-fontawesome-in-axure/</id>
     <published>2016-04-27T08:50:53.000Z</published>
     <updated>2016-04-27T09:20:42.000Z</updated>
+    
     <content type="html"><![CDATA[<p>FontAwesome不仅可以应用在web设计中，还可以在UI原型设计中，他有很多好处。</p>
 <ol>
 <li>图标多：基本上常见的图标他都囊括其中。</li>
@@ -28,69 +101,79 @@
 <li>颜色随意更换。</li>
 <li>排版容易：由于是字体，所有很容易与字体对其。（不过有的时候可能不希望对其）</li>
 </ol>
-<h2 id="u5982_u4F55_u4F7F_u7528"><a href="#u5982_u4F55_u4F7F_u7528" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="u7B2C_u4E00_u6B65_uFF1A__u5B89_u88C5_u5B57_u4F53"><a href="#u7B2C_u4E00_u6B65_uFF1A__u5B89_u88C5_u5B57_u4F53" class="headerlink" title="第一步： 安装字体"></a>第一步： 安装字体</h3><ol>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><h3 id="第一步：-安装字体"><a href="#第一步：-安装字体" class="headerlink" title="第一步： 安装字体"></a>第一步： 安装字体</h3><ol>
 <li>官网下载字体：<a href="https://fortawesome.github.io/Font-Awesome/" target="_blank" rel="external">https://fortawesome.github.io/Font-Awesome/</a> （just download， 写这个博客是的最新版为 <a href="https://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.6.1.zip" target="_blank" rel="external">https://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.6.1.zip</a> ）</li>
 <li>解压缩并安装fonts目录下的任意字体。</li>
 <li>安装后重启axure，并确认能够选择fontawesome字体。（可能需要重启axure2次）<br><img src="/asset/fontawesome_1.png" alt="fontawesome_1"></li>
 </ol>
-<h3 id="u7B2C_u4E8C_u6B65_uFF1A__u590D_u5236_u7C98_u8D34icon_u5B57_u7B26"><a href="#u7B2C_u4E8C_u6B65_uFF1A__u590D_u5236_u7C98_u8D34icon_u5B57_u7B26" class="headerlink" title="第二步： 复制粘贴icon字符"></a>第二步： 复制粘贴icon字符</h3><ol>
+<h3 id="第二步：-复制粘贴icon字符"><a href="#第二步：-复制粘贴icon字符" class="headerlink" title="第二步： 复制粘贴icon字符"></a>第二步： 复制粘贴icon字符</h3><ol>
 <li>在Axure中随意建立个文本框。</li>
 <li>将字体选择为FontAwesome。</li>
 <li>打开FontAwesome的cheatsheet <a href="https://fortawesome.github.io/Font-Awesome/cheatsheet/" target="_blank" rel="external">https://fortawesome.github.io/Font-Awesome/cheatsheet/</a></li>
 <li>复制你想要的图标到那个文本框中。</li>
 <li>随意的改变颜色和大小，开始享受fontawesome的便捷吧。</li>
 </ol>
-<h3 id="u7B2C_u4E09_u6B65_uFF1A__u53D1_u5E03_u6210HTML_u6587_u4EF6"><a href="#u7B2C_u4E09_u6B65_uFF1A__u53D1_u5E03_u6210HTML_u6587_u4EF6" class="headerlink" title="第三步： 发布成HTML文件"></a>第三步： 发布成HTML文件</h3><p>此时已经可以在编辑页面查看效果了，但是预览和生成html的时候还是现实方块，解决方法也很简单。</p>
+<h3 id="第三步：-发布成HTML文件"><a href="#第三步：-发布成HTML文件" class="headerlink" title="第三步： 发布成HTML文件"></a>第三步： 发布成HTML文件</h3><p>此时已经可以在编辑页面查看效果了，但是预览和生成html的时候还是现实方块，解决方法也很简单。</p>
 <ol>
 <li>在axure中，打开 Publish &gt; Generate HTML Files &gt; Web Fonts</li>
 <li>点击加号添加一个webfont， URL 添加最新的地址，例如 <a href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" target="_blank" rel="external">https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css</a><br><img src="/asset/fontawesome_2.png" alt="fontawesome_2"></li>
 </ol>
-<h2 id="u5176_u4ED6"><a href="#u5176_u4ED6" class="headerlink" title="其他"></a>其他</h2><ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
 <li>网络上可能还有一些font-awesome的widgets，我并不建议使用。因为上述方法已经足够简单了，导入第三方widgets只会徒增烦恼。</li>
 <li>如果官方提供的css地址不可用可以使用一些国内的cdn，例如 <a href="http://www.bootcdn.cn/font-awesome/" target="_blank" rel="external">http://www.bootcdn.cn/font-awesome/</a></li>
 <li>阿里有一个图标服务也非常不错, 推荐尝试一下 <a href="http://iconfont.cn/" target="_blank" rel="external">http://iconfont.cn/</a></li>
 </ul>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>FontAwesome不仅可以应用在web设计中，还可以在UI原型设计中，他有很多好处。</p>
-<ol>
-<li>图标多：基本上常见的图标他都囊括其中。</li>
-<li>适量字体：随意放大缩小无锯齿。</li>
-<li>轻量级：文件非常小。</li>
-<li>颜色随意更]]>
+    
+      &lt;p&gt;FontAwesome不仅可以应用在web设计中，还可以在UI原型设计中，他有很多好处。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;图标多：基本上常见的图标他都囊括其中。&lt;/li&gt;
+&lt;li&gt;适量字体：随意放大缩小无锯齿。&lt;/li&gt;
+&lt;li&gt;轻量级：文件非常小。&lt;/li&gt;
+&lt;li&gt;颜色随意更
+    
     </summary>
+    
     
       <category term="axure" scheme="http://yoursite.com/tags/axure/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Atom vi-mode 将jj映射成ESC的方法]]></title>
+    <title>Atom vi-mode 将jj映射成ESC的方法</title>
     <link href="http://yoursite.com/2016/atom-vi-mode-maping-jj2esc/"/>
     <id>http://yoursite.com/2016/atom-vi-mode-maping-jj2esc/</id>
     <published>2016-03-19T10:51:09.000Z</published>
     <updated>2016-03-19T12:32:21.000Z</updated>
+    
     <content type="html"><![CDATA[<p>很久前试用过Atom，当时很卡。最近有下载了一次感觉速度有很大提升，插件系统感觉比sublime更完善一些。<br>不过有个小问题：vi-mode 下配置 jj 到 esc 的配置方法不是很直观，不只是设置keymap就可以了，下面我贴出我正在使用的配置文件。</p>
-<p>~/.atom/keymap.cson<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39;atom-text-editor.vim-mode.insert-mode&#39;:&#10;  &#39;j&#39;: &#39;exit-insert-mode-if-preceded-by-j&#39;</span><br></pre></td></tr></table></figure></p>
-<p>~/.atom/init.coffee<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">atom.commands.add &#39;atom-text-editor&#39;, &#39;exit-insert-mode-if-preceded-by-j&#39;: (e) -&#62;&#10;  editor = @getModel()&#10;  pos = editor.getCursorBufferPosition()&#10;  range = [pos.traverse([0,-1]), pos]&#10;  lastChar = editor.getTextInBufferRange(range)&#10;  if lastChar != &#34;j&#34;&#10;    e.abortKeyBinding()&#10;  else&#10;    editor.backspace()&#10;    atom.commands.dispatch(e.currentTarget, &#39;vim-mode:activate-normal-mode&#39;)</span><br></pre></td></tr></table></figure></p>
+<p>~/.atom/keymap.cson<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&apos;atom-text-editor.vim-mode.insert-mode&apos;:</div><div class="line">  &apos;j&apos;: &apos;exit-insert-mode-if-preceded-by-j&apos;</div></pre></td></tr></table></figure></p>
+<p>~/.atom/init.coffee<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">atom.commands.add &apos;atom-text-editor&apos;, &apos;exit-insert-mode-if-preceded-by-j&apos;: (e) -&gt;</div><div class="line">  editor = @getModel()</div><div class="line">  pos = editor.getCursorBufferPosition()</div><div class="line">  range = [pos.traverse([0,-1]), pos]</div><div class="line">  lastChar = editor.getTextInBufferRange(range)</div><div class="line">  if lastChar != &quot;j&quot;</div><div class="line">    e.abortKeyBinding()</div><div class="line">  else</div><div class="line">    editor.backspace()</div><div class="line">    atom.commands.dispatch(e.currentTarget, &apos;vim-mode:activate-normal-mode&apos;)</div></pre></td></tr></table></figure></p>
 <p>参考链接：<a href="https://github.com/atom/vim-mode/issues/334#issuecomment-85603175" target="_blank" rel="external">https://github.com/atom/vim-mode/issues/334#issuecomment-85603175</a></p>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>很久前试用过Atom，当时很卡。最近有下载了一次感觉速度有很大提升，插件系统感觉比sublime更完善一些。<br>不过有个小问题：vi-mode 下配置 jj 到 esc 的配置方法不是很直观，不只是设置keymap就可以了，下面我贴出我正在使用的配置文件。</p>
-<p]]>
+    
+      &lt;p&gt;很久前试用过Atom，当时很卡。最近有下载了一次感觉速度有很大提升，插件系统感觉比sublime更完善一些。&lt;br&gt;不过有个小问题：vi-mode 下配置 jj 到 esc 的配置方法不是很直观，不只是设置keymap就可以了，下面我贴出我正在使用的配置文件。&lt;/p&gt;
+&lt;p
+    
     </summary>
+    
     
   </entry>
   
   <entry>
-    <title><![CDATA[什么是 customer success management ?]]></title>
+    <title>什么是 customer success management ?</title>
     <link href="http://yoursite.com/2015/%E4%BB%80%E4%B9%88%E6%98%AF-customer-success-management/"/>
     <id>http://yoursite.com/2015/什么是-customer-success-management/</id>
     <published>2015-12-17T15:49:07.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
+    
     <content type="html"><![CDATA[<p>Customer Success Management（CSM）是一个最近在SAAS领域新出现的词。下面我将结合我的实际工作经验来说一下我的理解。</p>
-<h2 id="CSM_u7684_u7531_u6765"><a href="#CSM_u7684_u7531_u6765" class="headerlink" title="CSM的由来"></a>CSM的由来</h2><p>软件公司业务模式的变化催生了CSM这个角色。传统软件公司的业务模式是license模式，整个流程重销售轻服务。而SAAS的业务模式则是按月（年）订阅的方式。想要获得更多长期稳定的收入（CLV：客户生命周期价值）就必须做到开源节流。开源：除了获取获取新客户外还可以扩大现有客户的付费规模。截流：提高客户忠诚度减少流失。CSM就是为了达成这样的目的而诞生的角色，他更像一个行业顾问，推动客户更好的使用他们已经购买的产品，挖掘更多的产品价值，帮助客户取得所在行业的成功从而扩大订阅规模。</p>
-<h2 id="CSM_u7684_u6280_u80FD_u8981_u6C42"><a href="#CSM_u7684_u6280_u80FD_u8981_u6C42" class="headerlink" title="CSM的技能要求"></a>CSM的技能要求</h2><p>既然是新出现的职位，技能要求上一定与传统的AM有所差别。我简单的罗列一下我认为的CSM关键要求：</p>
+<h2 id="CSM的由来"><a href="#CSM的由来" class="headerlink" title="CSM的由来"></a>CSM的由来</h2><p>软件公司业务模式的变化催生了CSM这个角色。传统软件公司的业务模式是license模式，整个流程重销售轻服务。而SAAS的业务模式则是按月（年）订阅的方式。想要获得更多长期稳定的收入（CLV：客户生命周期价值）就必须做到开源节流。开源：除了获取获取新客户外还可以扩大现有客户的付费规模。截流：提高客户忠诚度减少流失。CSM就是为了达成这样的目的而诞生的角色，他更像一个行业顾问，推动客户更好的使用他们已经购买的产品，挖掘更多的产品价值，帮助客户取得所在行业的成功从而扩大订阅规模。</p>
+<h2 id="CSM的技能要求"><a href="#CSM的技能要求" class="headerlink" title="CSM的技能要求"></a>CSM的技能要求</h2><p>既然是新出现的职位，技能要求上一定与传统的AM有所差别。我简单的罗列一下我认为的CSM关键要求：</p>
 <ul>
 <li>让客户最大化的了解产品的价值。</li>
 <li>了解行业，能够帮助客户在其所在行业取得成功。</li>
@@ -100,89 +183,110 @@
 <li>总结产品的最佳实践。</li>
 </ul>
 <p>总之，CSM应该是公司最了解行业和产品的人。</p>
-<h2 id="u56FD_u5185_u5B9E_u9645_u60C5_u51B5"><a href="#u56FD_u5185_u5B9E_u9645_u60C5_u51B5" class="headerlink" title="国内实际情况"></a>国内实际情况</h2><p>很遗憾我在招聘网站上搜索“客户成功经理”时，开放的职位寥寥无几而且薪水很低，完全与CSM应有的技能不相匹配。</p>
+<h2 id="国内实际情况"><a href="#国内实际情况" class="headerlink" title="国内实际情况"></a>国内实际情况</h2><p>很遗憾我在招聘网站上搜索“客户成功经理”时，开放的职位寥寥无几而且薪水很低，完全与CSM应有的技能不相匹配。</p>
 <p>我所了解的一些SAAS企业一般也没有明确的CSM职位，大多由客户支持、售前支持、销售、产品运营、产品经理等职位来承担部分CSM的工作。这种现象与销售为主的业务模式又很直接的关系。</p>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>Customer Success Management（CSM）是一个最近在SAAS领域新出现的词。下面我将结合我的实际工作经验来说一下我的理解。</p>
-<h2 id="CSM_u7684_u7531_u6765"><a href="#CSM_u7684_u7531_u6]]>
+    
+      &lt;p&gt;Customer Success Management（CSM）是一个最近在SAAS领域新出现的词。下面我将结合我的实际工作经验来说一下我的理解。&lt;/p&gt;
+&lt;h2 id=&quot;CSM的由来&quot;&gt;&lt;a href=&quot;#CSM的由来&quot; class=&quot;headerlink&quot; title=
+    
     </summary>
+    
     
   </entry>
   
   <entry>
-    <title><![CDATA[电视收视率的一点看法]]></title>
+    <title>电视收视率的一点看法</title>
     <link href="http://yoursite.com/2015/%E7%94%B5%E8%A7%86%E6%94%B6%E8%A7%86%E7%8E%87%E7%9A%84%E4%B8%80%E7%82%B9%E7%9C%8B%E6%B3%95/"/>
     <id>http://yoursite.com/2015/电视收视率的一点看法/</id>
     <published>2015-04-25T11:15:26.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
-    <content type="html"><![CDATA[<h2 id="u4EC0_u4E48_u662F_u6536_u89C6_u7387"><a href="#u4EC0_u4E48_u662F_u6536_u89C6_u7387" class="headerlink" title="什么是收视率"></a>什么是收视率</h2><ul>
+    
+    <content type="html"><![CDATA[<h2 id="什么是收视率"><a href="#什么是收视率" class="headerlink" title="什么是收视率"></a>什么是收视率</h2><ul>
 <li>有多少人看了电视节目就叫做收视率。例如收视率1%就意味着，全国10亿看电视的收视人群中有有1千万的人同时在看。</li>
 <li>衡量广告效果的最简单和粗暴的方式就是回答一个问题“有多少人看”。收视率就是回答“电视广告有多少人看”的指标。</li>
 <li>广告主花钱买电视台的广告位置并用收视率衡量自己花钱打广告的效果。<br>如果只有一个电视台那么他绝对不希望有收视率的存在，因为那样它可以随便要价。</li>
 <li>如果多个电视台竞争有限的广告资源，那么他叫要证明自己的广告位置好，所以电视台才同意收视率的存在。</li>
 </ul>
-<h2 id="u76EE_u524D_u6536_u89C6_u7387_u600E_u4E48_u8BA1_u7B97"><a href="#u76EE_u524D_u6536_u89C6_u7387_u600E_u4E48_u8BA1_u7B97" class="headerlink" title="目前收视率怎么计算"></a>目前收视率怎么计算</h2><ul>
+<h2 id="目前收视率怎么计算"><a href="#目前收视率怎么计算" class="headerlink" title="目前收视率怎么计算"></a>目前收视率怎么计算</h2><ul>
 <li>收视率作为一个买卖双方用来结算的数据支持指标必须理论上无懈可击的公平，但操作上又无与伦比的灵活。</li>
 <li>美国双向机顶盒普及，收视率可以实时灵活的统计，非常方便。</li>
 <li>国内的收视率被央视索福瑞垄断，统计方法大约是国内有几万的测试样本，通过日记卡或测量仪收集用户数据并生成结果。统计方法就是绝对的统计学教科书，但操作起来可能有样本被污染的可能。（例如即使索福瑞做了大量的保密工作，但是也有被电视台买通样本的可能）</li>
 <li>国内还有一些新兴的机遇智能电视截屏识别台标的统计方法。以酷云eye为例官方称有1000万样本。但是样本的问题是：1.多集中于新买的智能电视样本空间不具有普遍意义。2. 即使是1000万样本统计精准度也没有质的提高。3. 相对于索福瑞样本空间更容易造假（原理类似于appstore刷榜）。但好处是可以更快捷的获取数据。</li>
 </ul>
-<h2 id="u4EE5_u540E_u6536_u89C6_u7387_u5982_u4F55_u53D1_u5C55"><a href="#u4EE5_u540E_u6536_u89C6_u7387_u5982_u4F55_u53D1_u5C55" class="headerlink" title="以后收视率如何发展"></a>以后收视率如何发展</h2><ul>
+<h2 id="以后收视率如何发展"><a href="#以后收视率如何发展" class="headerlink" title="以后收视率如何发展"></a>以后收视率如何发展</h2><ul>
 <li>没有发展。随即技术的发展广告结算的方式和指标都在飞速的变化。基于收视率尤其是数据统计生成的收视率必然淘汰。</li>
 <li>但是会存在，因为要保持“理论上的无懈可击”和“操作上的无比灵活”。<br>另外随着电视媒体整体关注度的下降导致广告预算比例的下降导致收视率随着直播电视逐步消亡。</li>
 </ul>
 <p>利益相关： 酷云前员工</p>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<h2 id="u4EC0_u4E48_u662F_u6536_u89C6_u7387"><a href="#u4EC0_u4E48_u662F_u6536_u89C6_u7387" class="headerlink" title="什么是收视率"></a>什么是收视率</h2]]>
+    
+      &lt;h2 id=&quot;什么是收视率&quot;&gt;&lt;a href=&quot;#什么是收视率&quot; class=&quot;headerlink&quot; title=&quot;什么是收视率&quot;&gt;&lt;/a&gt;什么是收视率&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;有多少人看了电视节目就叫做收视率。例如收视率1%就意味着，全国10亿看电视的收视人群中有有1千万
+    
     </summary>
+    
     
   </entry>
   
   <entry>
-    <title><![CDATA[FireTV-UI-Sketch]]></title>
+    <title>FireTV-UI-Sketch</title>
     <link href="http://yoursite.com/2015/FireTV-UI-Sketch/"/>
     <id>http://yoursite.com/2015/FireTV-UI-Sketch/</id>
     <published>2015-03-04T00:55:03.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
+    
     <content type="html"><![CDATA[<p><img src="/asset/firetv-ui-sketch.png" alt="tvplayer"></p>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p><img src="/asset/firetv-ui-sketch.png" alt="tvplayer"></p>
-]]>
+    
+      &lt;p&gt;&lt;img src=&quot;/asset/firetv-ui-sketch.png&quot; alt=&quot;tvplayer&quot;&gt;&lt;/p&gt;
+
+    
     </summary>
+    
     
       <category term="sketch" scheme="http://yoursite.com/tags/sketch/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[TV Video player UI sketch]]></title>
+    <title>TV Video player UI sketch</title>
     <link href="http://yoursite.com/2015/TV-Video-player-UI-sketch/"/>
     <id>http://yoursite.com/2015/TV-Video-player-UI-sketch/</id>
     <published>2015-03-02T06:15:49.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
+    
     <content type="html"><![CDATA[<p><img src="/asset/tvplayer.png" alt="tvplayer"></p>
 <p><a href="/asset/files/tv-player-sketch.sketch">free donwload</a></p>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p><img src="/asset/tvplayer.png" alt="tvplayer"></p>
-<p><a href="/asset/files/tv-player-sketch.sketch">free donwload</a></p>
-]]>
+    
+      &lt;p&gt;&lt;img src=&quot;/asset/tvplayer.png&quot; alt=&quot;tvplayer&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/asset/files/tv-player-sketch.sketch&quot;&gt;free donwload&lt;/a&gt;&lt;/p&gt;
+
+    
     </summary>
+    
     
       <category term="sketch" scheme="http://yoursite.com/tags/sketch/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[基于互联网的多屏互动的思路]]></title>
+    <title>基于互联网的多屏互动的思路</title>
     <link href="http://yoursite.com/2015/%E5%9F%BA%E4%BA%8E%E4%BA%92%E8%81%94%E7%BD%91%E7%9A%84%E5%A4%9A%E5%B1%8F%E4%BA%92%E5%8A%A8%E7%9A%84%E6%80%9D%E8%B7%AF/"/>
     <id>http://yoursite.com/2015/基于互联网的多屏互动的思路/</id>
     <published>2015-02-25T14:09:17.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
-    <content type="html"><![CDATA[<h2 id="u95EE_u9898"><a href="#u95EE_u9898" class="headerlink" title="问题"></a>问题</h2><p>目前大多数投屏的技术方案（包括airplay，DLNA，chromecast，miracast等）有一个共同的特点就是<strong>基于局域网的设备发现</strong>。这个特点明显的好处就是完全不依赖于internet，不需要连接外网就能正常工作。</p>
+    
+    <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>目前大多数投屏的技术方案（包括airplay，DLNA，chromecast，miracast等）有一个共同的特点就是<strong>基于局域网的设备发现</strong>。这个特点明显的好处就是完全不依赖于internet，不需要连接外网就能正常工作。</p>
 <p>但随着时代的发展，1.越来越多的设备可以上网（参见物联网的定义 IoT:Internet of Thing），2.绝大多数的视频都来自网络。基于以上两点 “不依赖internet” 带来的好处并不明显。但带来的缺点去越来越突出:</p>
 <ul>
 <li>设备配对操作复杂：airplay、DLNA、chromecast需要在同一局域网内并且用专门的硬件和客户端软件才能操作成功。miracast更需要连接wifi热点。</li>
@@ -191,37 +295,42 @@
 <li>交互逻辑陈旧：例如airplay依然是扩展屏幕的概念，部分ipad app airplay到itv时，ipad的app竟然必须保持开启且常亮。难道不能同时用ipad干点儿别的吗？</li>
 <li>稳定性和兼容性差：airplay是所有方案中最稳定的，但也经常出错。</li>
 </ul>
-<h2 id="u65B9_u6848"><a href="#u65B9_u6848" class="headerlink" title="方案"></a>方案</h2><p><strong>基于互联网的投屏方案</strong></p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p><strong>基于互联网的投屏方案</strong></p>
 <p><img src="/asset/airplay.png" alt="基于互联网的投屏方案"></p>
 <p>这个方案的特点是：</p>
 <ol>
 <li>多了一个云端的server，不再基于设备发现。不再需要设备配对的过程，也不强制在同一个局域网内。</li>
 <li>采用PUB/SUB的模型，解除部分耦合、简单稳定且易于理解。</li>
 </ol>
-<h3 id="u5907_u6CE8"><a href="#u5907_u6CE8" class="headerlink" title="备注"></a>备注</h3><ol>
+<h3 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h3><ol>
 <li>chromecast也是有中央服务器的，但是它依然机遇设备发现。这就导致了：1. 将chromecast插在酒店电视上，但酒店的局域网时不互通的导致chromecast没法用。2. youtube用chromecast播放必须安装一个chrome插件。……</li>
 <li>airplay和其他的方案在播放远程视频时也是传输的URL。但airplay还需要在客户端显示视频的进度条和下载速度等信息，这可能导致很多同步的错误。</li>
 <li>airply和chromecast的应用场景比这个方案的应用场景要宏大的多（mirror功能）。本方案只想解决最基础和常用的功能。（mirror功能的延迟和画质真的是惨不忍睹呀）</li>
 </ol>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<h2 id="u95EE_u9898"><a href="#u95EE_u9898" class="headerlink" title="问题"></a>问题</h2><p>目前大多数投屏的技术方案（包括airplay，DLNA，chromecast，miracast等）有一个]]>
+    
+      &lt;h2 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h2&gt;&lt;p&gt;目前大多数投屏的技术方案（包括airplay，DLNA，chromecast，miracast等）有一个共同的特点就是&lt;strong&gt;基于局
+    
     </summary>
+    
     
       <category term="multi-screen" scheme="http://yoursite.com/tags/multi-screen/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[对于chromecast的看法]]></title>
+    <title>对于chromecast的看法</title>
     <link href="http://yoursite.com/2015/%E5%AF%B9%E4%BA%8Echromecast%E7%9A%84%E7%9C%8B%E6%B3%95/"/>
     <id>http://yoursite.com/2015/对于chromecast的看法/</id>
     <published>2015-02-25T14:08:45.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
+    
     <content type="html"><![CDATA[<p>前段时间搞了个chromecast，说说想法：</p>
-<h3 id="u6295_u5C4F_u4E0D_u662F_u4EC0_u4E48_u65B0_u9C9C_u7684_u6982_u5FF5_u3002"><a href="#u6295_u5C4F_u4E0D_u662F_u4EC0_u4E48_u65B0_u9C9C_u7684_u6982_u5FF5_u3002" class="headerlink" title="投屏不是什么新鲜的概念。"></a>投屏不是什么新鲜的概念。</h3><p>很早苹果就有了airplay，airplay发展到今天也没有太大的变化，唯一一次升级还是因为客户端硬件（iOS设备和OSx设备）实现了实时编码能力所以提供了airplay mirror功能。另外还有个DLNA，它是由几家大公司一起开发的，功能和airplay差不多，不过由于是开放协议所以相对airplay要复杂很多，目前没有稳定的硬件和软件实现。近几年又出现了一个叫mirrorcast的协议，功能相当于airplay的mirror的功能。 </p>
-<h3 id="chromecast__u7684_u4E00_u4E9B_u521B_u65B0"><a href="#chromecast__u7684_u4E00_u4E9B_u521B_u65B0" class="headerlink" title="chromecast 的一些创新"></a>chromecast 的一些创新</h3><p>这才是重点，airplay只是流媒体（音频、视频、图片）的跨屏幕传输，而chromecast传输的对象是web。因为web支持流媒体（音频、视频、图片）所以airplay支持的所有功能chromecast也都支持。但由于传输的对象是web，所以未来会有很大的想象的空间，例如：<br>用手机投放一个Web Game。<br>播放视频中加入贴片广告。<br>基于web的简单应用，例如手机ppt投放到大屏幕并实现更多的控制，大屏幕现实航班信息等<br>……</p>
-<h3 id="chromecast_u76EE_u524D_u7684_u60C5_u51B5"><a href="#chromecast_u76EE_u524D_u7684_u60C5_u51B5" class="headerlink" title="chromecast目前的情况"></a>chromecast目前的情况</h3><ul>
+<h3 id="投屏不是什么新鲜的概念。"><a href="#投屏不是什么新鲜的概念。" class="headerlink" title="投屏不是什么新鲜的概念。"></a>投屏不是什么新鲜的概念。</h3><p>很早苹果就有了airplay，airplay发展到今天也没有太大的变化，唯一一次升级还是因为客户端硬件（iOS设备和OSx设备）实现了实时编码能力所以提供了airplay mirror功能。另外还有个DLNA，它是由几家大公司一起开发的，功能和airplay差不多，不过由于是开放协议所以相对airplay要复杂很多，目前没有稳定的硬件和软件实现。近几年又出现了一个叫mirrorcast的协议，功能相当于airplay的mirror的功能。 </p>
+<h3 id="chromecast-的一些创新"><a href="#chromecast-的一些创新" class="headerlink" title="chromecast 的一些创新"></a>chromecast 的一些创新</h3><p>这才是重点，airplay只是流媒体（音频、视频、图片）的跨屏幕传输，而chromecast传输的对象是web。因为web支持流媒体（音频、视频、图片）所以airplay支持的所有功能chromecast也都支持。但由于传输的对象是web，所以未来会有很大的想象的空间，例如：<br>用手机投放一个Web Game。<br>播放视频中加入贴片广告。<br>基于web的简单应用，例如手机ppt投放到大屏幕并实现更多的控制，大屏幕现实航班信息等<br>……</p>
+<h3 id="chromecast目前的情况"><a href="#chromecast目前的情况" class="headerlink" title="chromecast目前的情况"></a>chromecast目前的情况</h3><ul>
 <li>内容少：几乎没有国内的内容，国外的内容也非常少，和amazon fire tv、apple tv、roku 没法比。<strong>但支持youtube</strong>。</li>
 <li>硬件差：硬件便宜但是性能很差，前面提到的web app在目前的硬件上是不可能实现的。稳定性好于山寨盒子但不如apple tv。</li>
 <li>开发者：我看了开发文档实现了个hello world。整个体验不是很好，例如：开发者必须通过google的审核会费貌似5美刀；每个应用的程序必须在互联网上而不是发送端；只能播放互联网上的东西、局域网和本地内容有限制；由于硬件性能限制除了播视频几乎干不了别的；（我没有太深入的研究，所以这部分说的可能不准确）</li>
@@ -230,35 +339,40 @@
 <p>总体上说，硬件性能再好点儿，内容再多点儿，平台再开放点儿，一段时间以后可能会有发展，但是目前没有使用价值。销量不错可能只是因为便宜。</p>
 <p><a href="http://www.zhihu.com/question/21381210/answer/26779501?group_id=330358231" target="_blank" rel="external">http://www.zhihu.com/question/21381210/answer/26779501?group_id=330358231</a></p>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>前段时间搞了个chromecast，说说想法：</p>
-<h3 id="u6295_u5C4F_u4E0D_u662F_u4EC0_u4E48_u65B0_u9C9C_u7684_u6982_u5FF5_u3002"><a href="#u6295_u5C4F_u4E0D_]]>
+    
+      &lt;p&gt;前段时间搞了个chromecast，说说想法：&lt;/p&gt;
+&lt;h3 id=&quot;投屏不是什么新鲜的概念。&quot;&gt;&lt;a href=&quot;#投屏不是什么新鲜的概念。&quot; class=&quot;headerlink&quot; title=&quot;投屏不是什么新鲜的概念。&quot;&gt;&lt;/a&gt;投屏不是什么新鲜的概念。&lt;/h3&gt;&lt;p
+    
     </summary>
+    
     
       <category term="multi-screen" scheme="http://yoursite.com/tags/multi-screen/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[多屏应用的设计特征与实例]]></title>
+    <title>多屏应用的设计特征与实例</title>
     <link href="http://yoursite.com/2015/%E5%A4%9A%E5%B1%8F%E5%BA%94%E7%94%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E7%89%B9%E5%BE%81%E4%B8%8E%E5%AE%9E%E4%BE%8B/"/>
     <id>http://yoursite.com/2015/多屏应用的设计特征与实例/</id>
     <published>2015-02-25T14:08:44.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
-    <content type="html"><![CDATA[<h4 id="u4E00_u81F4_u6027_u7279_u5F81"><a href="#u4E00_u81F4_u6027_u7279_u5F81" class="headerlink" title="一致性特征"></a>一致性特征</h4><p>在不同的设备上呈现不同的样式，但是大体的功能类似。例如，</p>
+    
+    <content type="html"><![CDATA[<h4 id="一致性特征"><a href="#一致性特征" class="headerlink" title="一致性特征"></a>一致性特征</h4><p>在不同的设备上呈现不同的样式，但是大体的功能类似。例如，</p>
 <ul>
 <li>google.com youku.com等</li>
 <li>微信、淘宝 在iOS和android平台上的app。</li>
 <li>hulu 和 netfix在pc、mobile、Xbox、PS、roku上的不同方案。eg. <a href="http://www.hulu.com/plus/devices" target="_blank" rel="external">http://www.hulu.com/plus/devices</a></li>
 </ul>
-<h4 id="u8FDE_u7EED_u6027_u7279_u5F81"><a href="#u8FDE_u7EED_u6027_u7279_u5F81" class="headerlink" title="连续性特征"></a>连续性特征</h4><p>一个工作需要在不同设备上连续完成，切换设备时要保持切换时的状态。例如，</p>
+<h4 id="连续性特征"><a href="#连续性特征" class="headerlink" title="连续性特征"></a>连续性特征</h4><p>一个工作需要在不同设备上连续完成，切换设备时要保持切换时的状态。例如，</p>
 <ul>
 <li>用手机听音乐然后切换到汽车上的蓝牙音响，播放状态是连续的。</li>
 <li>在手机优酷上播放的记录，打开PC端一样可以接上上次的播放时刻继续播放。</li>
 <li>iOS 的Handoff功能，在电脑上编辑的文档在iPhone和iPad上可以继续编辑。</li>
 <li>Pocket(Read it later): 在各种设备上都可以查看自己的阅读清单。</li>
 </ul>
-<h4 id="u8865_u5145_u6027_u7279_u5F81"><a href="#u8865_u5145_u6027_u7279_u5F81" class="headerlink" title="补充性特征"></a>补充性特征</h4><p>指的是在两个设备的功能互补，分为两种情况：</p>
+<h4 id="补充性特征"><a href="#补充性特征" class="headerlink" title="补充性特征"></a>补充性特征</h4><p>指的是在两个设备的功能互补，分为两种情况：</p>
 <p>第一种 mast to have</p>
 <ul>
 <li><p><a href="https://itunes.apple.com/us/app/real-racing-2/id386568787?mt=8" target="_blank" rel="external">real race 2</a>:  iPad或airpaly作为比赛转播大屏幕，其他设备作为车手参加比赛。<img src="/asset/rr2partyplay.jpg" alt="">还可以airpaly的大屏幕作为第一视角比赛，iPhone作为遥控器＋路线地图，玩起来就想用XBox的手柄差不多。<em>（类似的游戏还有<a href="https://itunes.apple.com/us/app/padracer/id369603739?mt=8" target="_blank" rel="external">pad racer</a>, <a href="https://itunes.apple.com/cn/app/kuang-ye-biao-che8-ji-su-ling/id610391947?mt=8" target="_blank" rel="external">狂野飙车</a>)</em></p>
@@ -274,20 +388,27 @@
 </ul>
 <p>More examples you can see on <a href="https://www.pinterest.com/guolin/multi-screen-experience/" target="_blank" rel="external">https://www.pinterest.com/guolin/multi-screen-experience/</a></p>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<h4 id="u4E00_u81F4_u6027_u7279_u5F81"><a href="#u4E00_u81F4_u6027_u7279_u5F81" class="headerlink" title="一致性特征"></a>一致性特征</h4><p>在不同的设备上呈现不]]>
+    
+      &lt;h4 id=&quot;一致性特征&quot;&gt;&lt;a href=&quot;#一致性特征&quot; class=&quot;headerlink&quot; title=&quot;一致性特征&quot;&gt;&lt;/a&gt;一致性特征&lt;/h4&gt;&lt;p&gt;在不同的设备上呈现不同的样式，但是大体的功能类似。例如，&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;google.com youku
+    
     </summary>
+    
     
       <category term="multi-screen" scheme="http://yoursite.com/tags/multi-screen/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Getting started with Fig and MEAN.JS]]></title>
+    <title>Getting started with Fig and MEAN.JS</title>
     <link href="http://yoursite.com/2015/Getting-started-with-Fig-and-MEAN-JS/"/>
     <id>http://yoursite.com/2015/Getting-started-with-Fig-and-MEAN-JS/</id>
     <published>2015-02-24T15:34:06.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
+    
     <content type="html"><![CDATA[<p><a href="http://docker.io" target="_blank" rel="external">Docker</a> is an open-source project to easily create lightweight, portable and self-sufficient containers from any application. </p>
 <p><a href="http://www.fig.sh/index.html" target="_blank" rel="external">Fig.sh</a> is a tool to use docker for makeing a fast, isolated development environments.</p>
 <p><a href="http://meanjs.org/" target="_blank" rel="external">MEAN.JS</a> MEAN means Mongodb, Express.js, Angular.js and Node.js. MEAN is a seed to setup a MEAN project quickly.</p>
@@ -297,28 +418,32 @@
 <p>Ensure all the tools were installed:</p>
 <figure class="highlight bash"><pre><div class="line">$ docker version</div><div class="line">$ fig –version</div></pre></figure>
 
-<h3 id="Get_the_MEAN-JS"><a href="#Get_the_MEAN-JS" class="headerlink" title="Get the MEAN.JS"></a>Get the MEAN.JS</h3><p>Download the <a href="http://yeoman.io/" target="_blank" rel="external">yo</a> and install MEAN.JS with yo.</p>
+<h3 id="Get-the-MEAN-JS"><a href="#Get-the-MEAN-JS" class="headerlink" title="Get the MEAN.JS"></a>Get the MEAN.JS</h3><p>Download the <a href="http://yeoman.io/" target="_blank" rel="external">yo</a> and install MEAN.JS with yo.</p>
 <figure class="highlight bash"><pre><div class="line">$ npm install -g yo generator-meanjs grunt</div><div class="line">$ yo meanjs</div><div class="line">$ grunt</div></pre></figure>
 
-<h3 id="Run_the_docker_with_fig"><a href="#Run_the_docker_with_fig" class="headerlink" title="Run the docker with fig"></a>Run the docker with fig</h3><p>If you use Mac, you neet run the docker host first.</p>
+<h3 id="Run-the-docker-with-fig"><a href="#Run-the-docker-with-fig" class="headerlink" title="Run the docker with fig"></a>Run the docker with fig</h3><p>If you use Mac, you neet run the docker host first.</p>
 <figure class="highlight bash"><pre><div class="line">$ boot2docker up</div><div class="line">$ $(boot2dockr shellinit)</div><div class="line">$ boot2docker ip</div><div class="line">// will display the ip address of docker host</div><div class="line">// may be <span class="number">192.168</span>.<span class="number">53.103</span></div></pre></figure>
 
 <p>change the DB connect URL from <code>mongodb://localhost/mean-dev</code> to <code>mongodb://db/mean-dev</code>. config file is <code>config/env/development.js</code></p>
 <p>Run <code>$ fig up</code> and open <code>http://docker-host-ip:3000</code></p>
 <p>That’s it. very simple.</p>
-<h2 id="But_if_you_realy_develop_on_this_docker_env"><a href="#But_if_you_realy_develop_on_this_docker_env" class="headerlink" title="But if you realy develop on this docker env"></a>But if you realy develop on this docker env</h2><p>You mast don’t like to build the docker image every time.  So you can mount the local development folder <code>./</code> to docker container.<br>It is very easy too. Just config the <code>fig.yml</code> under the web section</p>
+<h2 id="But-if-you-realy-develop-on-this-docker-env"><a href="#But-if-you-realy-develop-on-this-docker-env" class="headerlink" title="But if you realy develop on this docker env"></a>But if you realy develop on this docker env</h2><p>You mast don’t like to build the docker image every time.  So you can mount the local development folder <code>./</code> to docker container.<br>It is very easy too. Just config the <code>fig.yml</code> under the web section</p>
 <figure class="highlight"><pre><div class="line">volumes:</div><div class="line"> -<span class="ruby"> .<span class="symbol">:/data</span></span></div></pre></figure>
 
 <p>Then when you change any thing in you local code folder, the running doceker container will change immediately.</p>
-<h2 id="But_if_you_are_useing_Mac_2C_it_will_be_super_slowly"><a href="#But_if_you_are_useing_Mac_2C_it_will_be_super_slowly" class="headerlink" title="But if you are useing Mac, it will be super slowly."></a>But if you are useing Mac, it will be super slowly.</h2><p>because, there is performance issue when VirtualBox shell a folder from mac to boot2docker. I finded out the key is <code>node_modules</code> folder. If I don’t mount the <code>node_modules</code> folder, the preformance is ok. So my solution is mount the other folder individual. </p>
+<h2 id="But-if-you-are-useing-Mac-it-will-be-super-slowly"><a href="#But-if-you-are-useing-Mac-it-will-be-super-slowly" class="headerlink" title="But if you are useing Mac, it will be super slowly."></a>But if you are useing Mac, it will be super slowly.</h2><p>because, there is performance issue when VirtualBox shell a folder from mac to boot2docker. I finded out the key is <code>node_modules</code> folder. If I don’t mount the <code>node_modules</code> folder, the preformance is ok. So my solution is mount the other folder individual. </p>
 <p>the <code>fig.yml</code> will like:</p>
 <figure class="highlight"><pre><div class="line"><span class="title">volumes</span>:</div><div class="line"> - ./app:/<span class="typedef"><span class="keyword">data</span>/app</span></div><div class="line"> - ./config:/<span class="typedef"><span class="keyword">data</span>/config</span></div><div class="line"> - ./public:/<span class="typedef"><span class="keyword">data</span>/public</span></div><div class="line"> - ./.jshintrc:/<span class="typedef"><span class="keyword">data</span>/.jshintrc</span></div><div class="line"> - ./.csslintrc:/<span class="typedef"><span class="keyword">data</span>/.csslintrc</span></div><div class="line"> - ./package.json:/<span class="typedef"><span class="keyword">data</span>/package.json</span></div><div class="line"> - ./gruntfile.js:/<span class="typedef"><span class="keyword">data</span>/gruntfile.js</span></div><div class="line"> - ./server.js:/<span class="typedef"><span class="keyword">data</span>/server.js</span></div></pre></figure>
 
 <p>That is all. :)</p>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p><a href="http://docker.io" target="_blank" rel="external">Docker</a> is an open-source project to easily create lightweight, portable and]]>
+    
+      &lt;p&gt;&lt;a href=&quot;http://docker.io&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Docker&lt;/a&gt; is an open-source project to easily create lightweight, portable and
+    
     </summary>
+    
     
       <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
     
@@ -327,50 +452,56 @@
   </entry>
   
   <entry>
-    <title><![CDATA[NIKE+ fuelband]]></title>
+    <title>NIKE+ fuelband</title>
     <link href="http://yoursite.com/2015/NIKE-fuelband/"/>
     <id>http://yoursite.com/2015/NIKE-fuelband/</id>
     <published>2015-02-24T09:32:27.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
+    
     <content type="html"><![CDATA[<p><img src="/asset/fuelband.png" alt="fueland"></p>
 <p>入手NIKE＋ fuelband两周有余，说一下它的多屏体验。</p>
 <p>它其实就是功能很简单的一个计步器，但当它和手机与相连就产生了很有意思的变化。</p>
-<h4 id="u8BBE_u5907_u7AEF_uFF1A"><a href="#u8BBE_u5907_u7AEF_uFF1A" class="headerlink" title="设备端："></a>设备端：</h4><p>手环有一个显示屏，能显示当天的fuel值、时间、步数和卡路里。虽然只是有100多个灯的点阵led显示屏，但配合动画和亮度的变化效果还是非常赞的。</p>
+<h4 id="设备端："><a href="#设备端：" class="headerlink" title="设备端："></a>设备端：</h4><p>手环有一个显示屏，能显示当天的fuel值、时间、步数和卡路里。虽然只是有100多个灯的点阵led显示屏，但配合动画和亮度的变化效果还是非常赞的。</p>
 <p>设备上只有一个按钮，按一下可以点亮屏幕，再按一下可以切换显示内容。</p>
-<h4 id="u624B_u673A_u7AEF_uFF1A"><a href="#u624B_u673A_u7AEF_uFF1A" class="headerlink" title="手机端："></a>手机端：</h4><ul>
+<h4 id="手机端："><a href="#手机端：" class="headerlink" title="手机端："></a>手机端：</h4><ul>
 <li>蓝牙配对方式很简单和一般的蓝牙耳机没区别。</li>
 <li>配对成功后只要长按一下就能和手机连接上，过一段时间自动断开。（据说升级蓝牙4.0以后就不用这样了可以一直连接着）</li>
 <li>ios的app很漂亮，app的功能除了记录每天的运动量以外还有一些激励机制和社交功能。</li>
 </ul>
-<h4 id="update_3A"><a href="#update_3A" class="headerlink" title="update:"></a>update:</h4><ul>
+<h4 id="update"><a href="#update" class="headerlink" title="update:"></a>update:</h4><ul>
 <li>已经有三个led灯不亮了。</li>
 <li>外面的涂层有点儿开始变亮，变黏。</li>
 <li>渐渐的很少待了。</li>
 </ul>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p><img src="/asset/fuelband.png" alt="fueland"></p>
-<p>入手NIKE＋ fuelband两周有余，说一下它的多屏体验。</p>
-<p>它其实就是功能很简单的一个计步器，但当它和手机与相连就产生了很有意思的变化。</p>
-<h]]>
+    
+      &lt;p&gt;&lt;img src=&quot;/asset/fuelband.png&quot; alt=&quot;fueland&quot;&gt;&lt;/p&gt;
+&lt;p&gt;入手NIKE＋ fuelband两周有余，说一下它的多屏体验。&lt;/p&gt;
+&lt;p&gt;它其实就是功能很简单的一个计步器，但当它和手机与相连就产生了很有意思的变化。&lt;/p&gt;
+&lt;h
+    
     </summary>
+    
     
       <category term="internet of things" scheme="http://yoursite.com/tags/internet-of-things/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Docker搭建Shadowsocks]]></title>
+    <title>Docker搭建Shadowsocks</title>
     <link href="http://yoursite.com/2015/Docker%E6%90%AD%E5%BB%BAShadowsocks/"/>
     <id>http://yoursite.com/2015/Docker搭建Shadowsocks/</id>
     <published>2015-02-24T06:15:32.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
+    
     <content type="html"><![CDATA[<p>搭梯子的方法很多，但随着墙的升级很多都失效了。我用shadowsocks翻＊大约2年了一直很稳定.</p>
 <p>shadowsockes部署本身很简单，不过最近折腾Docker就做了个Docker的image，事情貌似更简单了。</p>
-<h2 id="u642D_u5EFA_u670D_u52A1_u7AEF"><a href="#u642D_u5EFA_u670D_u52A1_u7AEF" class="headerlink" title="搭建服务端"></a>搭建服务端</h2><h3 id="u542F_u52A8"><a href="#u542F_u52A8" class="headerlink" title="启动"></a>启动</h3><figure class="highlight"><pre><div class="line">docker pull guolin/shadowsock</div><div class="line">docker <span class="command">run</span> -d -p <span class="number">8838</span>:<span class="number">8838</span> <span class="comment">–name ss guolin/shadowsocks</span></div></pre></figure>
+<h2 id="搭建服务端"><a href="#搭建服务端" class="headerlink" title="搭建服务端"></a>搭建服务端</h2><h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight"><pre><div class="line">docker pull guolin/shadowsock</div><div class="line">docker <span class="command">run</span> -d -p <span class="number">8838</span>:<span class="number">8838</span> <span class="comment">–name ss guolin/shadowsocks</span></div></pre></figure>
 
-<h3 id="u5173_u95ED"><a href="#u5173_u95ED" class="headerlink" title="关闭"></a>关闭</h3><p><code>docker rm -f ss</code></p>
-<h3 id="u914D_u7F6E_u4FE1_u606F_u53EF_u4EE5_u901A_u8FC7evn_u4F20_u5165_uFF1A"><a href="#u914D_u7F6E_u4FE1_u606F_u53EF_u4EE5_u901A_u8FC7evn_u4F20_u5165_uFF1A" class="headerlink" title="配置信息可以通过evn传入："></a>配置信息可以通过evn传入：</h3><ul>
+<h3 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h3><p><code>docker rm -f ss</code></p>
+<h3 id="配置信息可以通过evn传入："><a href="#配置信息可以通过evn传入：" class="headerlink" title="配置信息可以通过evn传入："></a>配置信息可以通过evn传入：</h3><ul>
 <li>server address: $SS_SERVER_ADDR  默认 0.0.0.0</li>
 <li>server port: $SS_SERVER_PORT 默认 8388</li>
 <li>password: $SS_PASSWORD 默认 password</li>
@@ -381,7 +512,7 @@
 <figure class="highlight"><pre><div class="line">docker run <span class="operator">-d</span> -p <span class="number">9453</span>:<span class="number">8838</span> <span class="operator">-e</span> SS_PASSWORD=guolin –name ssguolin/shadowsocks</div></pre></figure>
 
 <p><em>小提示：</em><br>默认的8838端口可能会被拦截，换成其他端口试一下就OK了。</p>
-<h3 id="u901A_u8FC7tutum-co_u642D_u5EFA"><a href="#u901A_u8FC7tutum-co_u642D_u5EFA" class="headerlink" title="通过tutum.co搭建"></a>通过tutum.co搭建</h3><p><a href="http://tutum.co" target="_blank" rel="external">tutum.co</a>管理docker非常方便，尤其是直接连接DigitalOcean之后。</p>
+<h3 id="通过tutum-co搭建"><a href="#通过tutum-co搭建" class="headerlink" title="通过tutum.co搭建"></a>通过tutum.co搭建</h3><p><a href="http://tutum.co" target="_blank" rel="external">tutum.co</a>管理docker非常方便，尤其是直接连接DigitalOcean之后。</p>
 <p>我简单描述一下步骤。</p>
 <ol>
 <li>新建一个service。</li>
@@ -391,7 +522,7 @@
 <li>save &amp; deploy</li>
 <li>状态为Running后，可以在Endpoints中查看一个三级域名作为SS的地址。</li>
 </ol>
-<h2 id="u914D_u7F6E_u5BA2_u6237_u7AEF"><a href="#u914D_u7F6E_u5BA2_u6237_u7AEF" class="headerlink" title="配置客户端"></a>配置客户端</h2><p>每个人用的客户端的设置方法可能不同，但是参数是一样的。</p>
+<h2 id="配置客户端"><a href="#配置客户端" class="headerlink" title="配置客户端"></a>配置客户端</h2><p>每个人用的客户端的设置方法可能不同，但是参数是一样的。</p>
 <ul>
 <li>服务器地址：Endpoints中的三级域名，或者直接时你服务器的IP</li>
 <li>服务器端口：你设置的映射端口，默认是8838，最后换一下</li>
@@ -399,27 +530,32 @@
 <li>加密方法：默认为aes-256-cfb。</li>
 <li>本地端口：这个是本地socket的端口，例如8123。</li>
 </ul>
-<h3 id="u7ED9_u6D4F_u89C8_u5668_u914D_u7F6E_u4EE3_u7406"><a href="#u7ED9_u6D4F_u89C8_u5668_u914D_u7F6E_u4EE3_u7406" class="headerlink" title="给浏览器配置代理"></a>给浏览器配置代理</h3><ul>
+<h3 id="给浏览器配置代理"><a href="#给浏览器配置代理" class="headerlink" title="给浏览器配置代理"></a>给浏览器配置代理</h3><ul>
 <li>chrome: 安装autoproxy插件，代理模式选择socket5，地址172.0.0.1, 端口就是刚刚设置的本地端口。<em>（建议，因为很容易做规则匹配国内网站不走代理）</em></li>
 <li>mac全局代理: 网络偏好 － wifi － 高级 － 代理 － socket5代理 参数同上。</li>
 </ul>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>搭梯子的方法很多，但随着墙的升级很多都失效了。我用shadowsocks翻＊大约2年了一直很稳定.</p>
-<p>shadowsockes部署本身很简单，不过最近折腾Docker就做了个Docker的image，事情貌似更简单了。</p>
-<h2 id="u642D_u5E]]>
+    
+      &lt;p&gt;搭梯子的方法很多，但随着墙的升级很多都失效了。我用shadowsocks翻＊大约2年了一直很稳定.&lt;/p&gt;
+&lt;p&gt;shadowsockes部署本身很简单，不过最近折腾Docker就做了个Docker的image，事情貌似更简单了。&lt;/p&gt;
+&lt;h2 id=&quot;搭建服务端&quot;&gt;&lt;a
+    
     </summary>
+    
     
       <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[JavaScript 数据结构 与 lodash]]></title>
+    <title>JavaScript 数据结构 与 lodash</title>
     <link href="http://yoursite.com/2015/JavaScript-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E4%B8%8E-lodash/"/>
     <id>http://yoursite.com/2015/JavaScript-数据结构-与-lodash/</id>
     <published>2015-02-24T06:15:11.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
+    
     <content type="html"><![CDATA[<p>最近想用JavaScript补习一下数据结构的基础知识，但尝试开始之后有发现了<strong>几个问题</strong>：</p>
 <ol>
 <li><p>JS是一种弱类型的高级语言，只有6个基本类型（字符串、数字、布尔、null、Undifined和Object）。若要实现数组（!最基础的数据结构），列表和链表等必需基于Object的，所以就没有像C语言一样数组必须定长，必须连续的限制。所以大学时学的C语言数据结构更多的是一种编程思想而没多大实际意义。</p>
@@ -432,7 +568,7 @@
 </li>
 </ol>
 <p>So, 我编写列一个<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="external">Array.prototype</a>和<a href="https://lodash.com/docs" target="_blank" rel="external">lodash</a>关于数据结构与算法的列表，按照数据结构的方式进行索引。要了解详细内容当然还是查看文档和源码更准确。</p>
-<h2 id="u6570_u7EC4_u64CD_u4F5C"><a href="#u6570_u7EC4_u64CD_u4F5C" class="headerlink" title="数组操作"></a>数组操作</h2><ul>
+<h2 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h2><ul>
 <li>length: Array的长度（唯一的一个属性）</li>
 <li>indexOf lastIndexOf: 找到某个值的索引,</li>
 <li>join: 生成字符串</li>
@@ -441,13 +577,13 @@
 <li>_.fill 替换元素</li>
 <li>_.sample: 随机取几个值</li>
 </ul>
-<h2 id="u6392_u5E8F"><a href="#u6392_u5E8F" class="headerlink" title="排序"></a>排序</h2><ul>
+<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><ul>
 <li>reverse：倒转</li>
 <li>sort: 默认按照unicode进行排序。不生成新数组</li>
 <li>_.sortBy: 生成一个新数组</li>
 <li>_.shuffle: 给数组打乱顺序</li>
 </ul>
-<h2 id="u622A_u65AD_u3001_u8FDE_u63A5"><a href="#u622A_u65AD_u3001_u8FDE_u63A5" class="headerlink" title="截断、连接"></a>截断、连接</h2><ul>
+<h2 id="截断、连接"><a href="#截断、连接" class="headerlink" title="截断、连接"></a>截断、连接</h2><ul>
 <li>splice: 添加删除元素。神器</li>
 <li>concat: 连接多个数组</li>
 <li>slice _slice: 截取一部分数组</li>
@@ -458,7 +594,7 @@
 <li>_.without 去掉所有值：生成新数组</li>
 <li>_.partition: 拆分两个数组，一组是符合条件的，一组是不符合条件的</li>
 </ul>
-<h2 id="u8FED_u4EE3"><a href="#u8FED_u4EE3" class="headerlink" title="迭代"></a>迭代</h2><ul>
+<h2 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h2><ul>
 <li>reduce：累计执行</li>
 <li>forEach forEachRight</li>
 <li>every: 全部 == true</li>
@@ -466,7 +602,7 @@
 <li>filter：new  _filter _reject</li>
 <li>map：new</li>
 </ul>
-<h2 id="u5217_u8868_uFF1A"><a href="#u5217_u8868_uFF1A" class="headerlink" title="列表："></a>列表：</h2><ul>
+<h2 id="列表："><a href="#列表：" class="headerlink" title="列表："></a>列表：</h2><ul>
 <li>_initial: 所有元素除了最后一个</li>
 <li>_rest: 所有的元素除了第一个</li>
 <li>_sortedIndex：二分法查找插入的位置 _sortedLastIndex</li>
@@ -475,13 +611,13 @@
 <li>_countBy: 符合某种条件的个数</li>
 <li>_max _min ： 返回最大值最小值</li>
 </ul>
-<h2 id="u96C6_u5408_uFF1A"><a href="#u96C6_u5408_uFF1A" class="headerlink" title="集合："></a>集合：</h2><ul>
+<h2 id="集合："><a href="#集合：" class="headerlink" title="集合："></a>集合：</h2><ul>
 <li>_difference: 返回多个集合的差别</li>
 <li>_intersection: 合集</li>
 <li>_union: 并集</li>
 <li>_uniq: 但个集合去重</li>
 </ul>
-<h2 id="u961F_u5217_26amp_3B_u5806_u6808"><a href="#u961F_u5217_26amp_3B_u5806_u6808" class="headerlink" title="队列&amp;堆栈"></a>队列&amp;堆栈</h2><ul>
+<h2 id="队列-amp-堆栈"><a href="#队列-amp-堆栈" class="headerlink" title="队列&amp;堆栈"></a>队列&amp;堆栈</h2><ul>
 <li>push: 从最后插入一个元素</li>
 <li>pop：返回最后一个元素，并删除</li>
 <li>shift：返回第一个元素，并删除</li>
@@ -490,22 +626,27 @@
 <li>_take: 从头开始取 n _takeRight: 从尾取 _takeWhile _takeRightWhile</li>
 </ul>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>最近想用JavaScript补习一下数据结构的基础知识，但尝试开始之后有发现了<strong>几个问题</strong>：</p>
-<ol>
-<li><p>JS是一种弱类型的高级语言，只有6个基本类型（字符串、数字、布尔、null、Undifined和Object）。若要实]]>
+    
+      &lt;p&gt;最近想用JavaScript补习一下数据结构的基础知识，但尝试开始之后有发现了&lt;strong&gt;几个问题&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;JS是一种弱类型的高级语言，只有6个基本类型（字符串、数字、布尔、null、Undifined和Object）。若要实
+    
     </summary>
+    
     
       <category term="JavaScript" scheme="http://yoursite.com/tags/JavaScript/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Getting started with Fig and Express.js]]></title>
+    <title>Getting started with Fig and Express.js</title>
     <link href="http://yoursite.com/2015/Getting-started-with-Fig-and-Express-js/"/>
     <id>http://yoursite.com/2015/Getting-started-with-Fig-and-Express-js/</id>
     <published>2015-02-24T04:38:24.000Z</published>
     <updated>2016-01-23T09:44:27.000Z</updated>
+    
     <content type="html"><![CDATA[<p>Let’s use Fig to set up and run a Expressjs/MongoDB app. Before starting, you’ll need to have <strong>Fig</strong> installed.</p>
 <p>Let’s set up the <strong>four</strong> files that’ll get us started. </p>
 <p>First, our app is going to be running inside a Docker container which contains all of its dependencies. We can define what goes inside that Docker container using a file called <code>Dockerfile</code>. It’ll contain this to start with:</p>
@@ -538,10 +679,14 @@
 </ul>
 <p><em>注：第一次写英文博客 :)</em></p>
 ]]></content>
+    
     <summary type="html">
-    <![CDATA[<p>Let’s use Fig to set up and run a Expressjs/MongoDB app. Before starting, you’ll need to have <strong>Fig</strong> installed.</p>
-<p>Let’]]>
+    
+      &lt;p&gt;Let’s use Fig to set up and run a Expressjs/MongoDB app. Before starting, you’ll need to have &lt;strong&gt;Fig&lt;/strong&gt; installed.&lt;/p&gt;
+&lt;p&gt;Let’
+    
     </summary>
+    
     
       <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
     

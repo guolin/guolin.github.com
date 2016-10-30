@@ -82,7 +82,7 @@ window['_fs_org'] = 'T0QF';
 
   <h1 class="post-title">基于互联网的多屏互动的思路</h1>
   <section class="post-content article-entry">
-    <h2 id="u95EE_u9898"><a href="#u95EE_u9898" class="headerlink" title="问题"></a>问题</h2><p>目前大多数投屏的技术方案（包括airplay，DLNA，chromecast，miracast等）有一个共同的特点就是<strong>基于局域网的设备发现</strong>。这个特点明显的好处就是完全不依赖于internet，不需要连接外网就能正常工作。</p>
+    <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>目前大多数投屏的技术方案（包括airplay，DLNA，chromecast，miracast等）有一个共同的特点就是<strong>基于局域网的设备发现</strong>。这个特点明显的好处就是完全不依赖于internet，不需要连接外网就能正常工作。</p>
 <p>但随着时代的发展，1.越来越多的设备可以上网（参见物联网的定义 IoT:Internet of Thing），2.绝大多数的视频都来自网络。基于以上两点 “不依赖internet” 带来的好处并不明显。但带来的缺点去越来越突出:</p>
 <ul>
 <li>设备配对操作复杂：airplay、DLNA、chromecast需要在同一局域网内并且用专门的硬件和客户端软件才能操作成功。miracast更需要连接wifi热点。</li>
@@ -91,14 +91,14 @@ window['_fs_org'] = 'T0QF';
 <li>交互逻辑陈旧：例如airplay依然是扩展屏幕的概念，部分ipad app airplay到itv时，ipad的app竟然必须保持开启且常亮。难道不能同时用ipad干点儿别的吗？</li>
 <li>稳定性和兼容性差：airplay是所有方案中最稳定的，但也经常出错。</li>
 </ul>
-<h2 id="u65B9_u6848"><a href="#u65B9_u6848" class="headerlink" title="方案"></a>方案</h2><p><strong>基于互联网的投屏方案</strong></p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p><strong>基于互联网的投屏方案</strong></p>
 <p><img src="/asset/airplay.png" alt="基于互联网的投屏方案"></p>
 <p>这个方案的特点是：</p>
 <ol>
 <li>多了一个云端的server，不再基于设备发现。不再需要设备配对的过程，也不强制在同一个局域网内。</li>
 <li>采用PUB/SUB的模型，解除部分耦合、简单稳定且易于理解。</li>
 </ol>
-<h3 id="u5907_u6CE8"><a href="#u5907_u6CE8" class="headerlink" title="备注"></a>备注</h3><ol>
+<h3 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h3><ol>
 <li>chromecast也是有中央服务器的，但是它依然机遇设备发现。这就导致了：1. 将chromecast插在酒店电视上，但酒店的局域网时不互通的导致chromecast没法用。2. youtube用chromecast播放必须安装一个chrome插件。……</li>
 <li>airplay和其他的方案在播放远程视频时也是传输的URL。但airplay还需要在客户端显示视频的进度条和下载速度等信息，这可能导致很多同步的错误。</li>
 <li>airply和chromecast的应用场景比这个方案的应用场景要宏大的多（mirror功能）。本方案只想解决最基础和常用的功能。（mirror功能的延迟和画质真的是惨不忍睹呀）</li>
