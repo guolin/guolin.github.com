@@ -75,7 +75,8 @@ window['_fs_org'] = 'T0QF';
 
   <h1 class="post-title">加速NPM</h1>
   <section class="post-content article-entry">
-    <p>NPM很慢的原因：</p>
+    <p>日常开发反复使用npm install的时候太多了，而大多数时候它又非常的慢。所以动手研究一下如何优化。</p>
+<p>先找到两个影响速度的瓶颈：</p>
 <ol>
 <li>网络连接问题。</li>
 <li>NPM install的机制问题。</li>
@@ -102,7 +103,8 @@ window['_fs_org'] = 'T0QF';
 <p>因为publish频次不高，需要的时候切换回npm的官方registry就可以了。</p>
 <p>2.自动选择问题</p>
 <p>有的一套脚本可能会在国内和国外不同的服务器上运行，例如CI服务器在国外实际开发和部署在国内。这个时候就需要自动的选择合适的registry。</p>
-<p>ufnr就是解决这个问题，本身依赖很少下载快，并能够根据不同的环境切换合适的registry</p>
+<p>我自己写了个小程序来支持这种场景，<a href="https://github.com/guolin/ufnr" target="_blank" rel="external">https://github.com/guolin/ufnr</a></p>
+<p>本身依赖很少下载快，并能够根据不同的环境切换合适的registry。 觉得好给个星 :)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ npm install -g ufnr</div><div class="line">$ ufnr</div><div class="line">current registry is https://registry.npm.taobao.org</div></pre></td></tr></table></figure>
 <h2 id="2-npm机制问题"><a href="#2-npm机制问题" class="headerlink" title="2. npm机制问题"></a>2. npm机制问题</h2><ul>
 <li>没有离线模式，必须访问网络</li>
@@ -111,18 +113,14 @@ window['_fs_org'] = 'T0QF';
 <p>解决离线和缓存的方法有：</p>
 <ol>
 <li>上面提到的local-npm，相当于本地搭建一个registry镜像</li>
-<li><p>–cache-min： 这个参数可以强制使用本地缓存，例如,</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install --cache-min 999 xx</div><div class="line">// 强制优先使用本地999分钟内的缓存</div></pre></td></tr></table></figure>
-<p> 这种方法的缺点有两点；</p>
-<ol>
-<li>如果缓存中有对应的包依然需要发送Etag验证是否需要更新。</li>
-<li>如果缓存中有版本不对应的包则直接报错。（而不是下载正确的包）</li>
+<li>替换npm install，例如，npm-cache 等</li>
+<li>–cache-min： 这个参数可以强制使用本地缓存，例如,</li>
 </ol>
-</li>
-<li><p>替换npm install，例如，npm-cache 等</p>
-</li>
-</ol>
-<h2 id="3-终极解决方案"><a href="#3-终极解决方案" class="headerlink" title="3. 终极解决方案"></a>3. 终极解决方案</h2><p>yarn是facebook推出的解决方案，貌似也得到了npm的官方支持。解决了npm的主要问题，但网络连接问题依然需要切换registry来实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install --cache-min 999 xx</div><div class="line">// 强制优先使用本地999分钟内的缓存</div></pre></td></tr></table></figure>
+<p>这种方法的缺点有两点；</p>
+<pre><code>1. 如果缓存中有对应的包依然需要发送Etag验证是否需要更新。
+2. 如果缓存中有版本不对应的包则直接报错。（而不是下载正确的包）
+</code></pre><h2 id="3-终极解决方案"><a href="#3-终极解决方案" class="headerlink" title="3. 终极解决方案"></a>3. 终极解决方案</h2><p>yarn是facebook推出的解决方案，貌似也得到了npm的官方支持。解决了npm的主要问题，但网络连接问题依然需要切换registry来实现。</p>
 
   </section>
   <footer class="post-footer">
